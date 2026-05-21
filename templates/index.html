@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drive Speed Optimizer</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; }
+      form div { margin: 15px 0; }
+      label { display: block; margin-bottom: 5px; font-weight: bold; }
+      input[type="text"] { padding: 8px; width: 100%; max-width: 300px; box-sizing: border-box; }
+      button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+      button:hover { background-color: #45a049; }
+    </style>
+  </head>
+  <body>
+    <h1>Witaj — Drive Speed Optimizer</h1>
+    <p>To jest przykładowy plik HTML zwracany przez endpoint <code>/</code>.</p>
+
+    <hr>
+    <h2>Formularz</h2>
+    <form method="post" action="/submit">
+      <div>
+        <label for="var1">Zmienna 1:</label>
+        <input type="text" id="var1" name="var1" required>
+      </div>
+      <div>
+        <label for="var2">Zmienna 2:</label>
+        <input type="text" id="var2" name="var2" required>
+      </div>
+      <div>
+        <label for="var3">Zmienna 3:</label>
+        <input type="text" id="var3" name="var3" required>
+      </div>
+      <div>
+        <label for="var4">Zmienna 4:</label>
+        <input type="text" id="var4" name="var4" required>
+      </div>
+      <div>
+        <label for="var5">Zmienna 5:</label>
+        <input type="text" id="var5" name="var5" required>
+      </div>
+      <button type="submit">Wyślij</button>
+    </form>
+  </body>
+</html>
+
