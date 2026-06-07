@@ -19,28 +19,24 @@
 
     <hr>
     <h2>Formularz</h2>
-    <form method="post" action="/submit">
+    <form method="post" action="/safe-speed-form">
       <div>
-        <label for="var1">Zmienna 1:</label>
-        <input type="text" id="var1" name="var1" required>
+          <label>Visibility:</label>
+          <input type="number" name="visibility" required>
       </div>
       <div>
-        <label for="var2">Zmienna 2:</label>
-        <input type="text" id="var2" name="var2" required>
+          <label>Traffic:</label>
+          <input type="number" name="traffic" required>
       </div>
       <div>
-        <label for="var3">Zmienna 3:</label>
-        <input type="text" id="var3" name="var3" required>
+          <label>Vehicle Load:</label>
+          <input type="number" name="vehicle_load" required>
       </div>
       <div>
-        <label for="var4">Zmienna 4:</label>
-        <input type="text" id="var4" name="var4" required>
+          <label>Road:</label>
+          <input type="number" name="road" required>
       </div>
-      <div>
-        <label for="var5">Zmienna 5:</label>
-        <input type="text" id="var5" name="var5" required>
-      </div>
-      <button type="submit">Wyślij</button>
+      <button type="submit">Calculate</button>
     </form>
   </body>
 </html>

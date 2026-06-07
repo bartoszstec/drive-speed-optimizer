@@ -43,7 +43,7 @@ vehicle_load['high'] = fuzz.trimf(vehicle_load.universe, [65, 80, 95])
 vehicle_load['very_high'] = fuzz.trapmf(vehicle_load.universe, [90, 95, 100, 100])
 
 # Wejście 4: Charakterystyka drogi
-road['urban'] = fuzz.trapmf(road.universe,[0, 10, 30, 50])           # urban: gęsta zabudowa miejska, skrzyżowania, piesi, sygnalizacja świetlna
+road['urban'] = fuzz.trapmf(road.universe,[0, 0, 30, 50])           # urban: gęsta zabudowa miejska, skrzyżowania, piesi, sygnalizacja świetlna
 road['local'] = fuzz.trimf(road.universe,[40, 60, 80])              # local: drogi lokalne poza ścisłym centrum miasta, mniejszy ruch, mniej skrzyżowań
 road['expressway'] = fuzz.trimf(road.universe,[70, 100, 120])       # expressway: droga szybkiego ruchu, ograniczony dostęp, bezkolizyjne skrzyżowania
 road['motorway'] = fuzz.trapmf(road.universe,[110, 130, 140, 140])  # motorway: autostrada
@@ -69,56 +69,81 @@ v_safe['very_high'] = fuzz.trapmf(v_safe.universe, [110, 120, 140, 140])
 # traffic['low'] traffic['mid'] traffic['high']
 # vehicle_load['normal'] vehicle_load['high'] vehicle_load['very_high']
 # road['urban'] road['local'] road['expressway'] road['motorway']
+# v_safe['very_low'] v_safe['low'] v_safe['mid'] v_safe['high'] v_safe['very_high']
 
 # 3. BAZA REGUŁ ROZMYTYCH (LOGIKA IF-THEN)
-# REGUŁY PIORYTETOWE
+
+ # ONE VARIABLE RULES
 rule1 = ctrl.Rule(visibility['very_low'], v_safe['very_low'])
-rule2 = ctrl.Rule(visibility['low'] & traffic['high'], v_safe['very_low'])
-rule3 = ctrl.Rule(visibility['low'] & road['urban'], v_safe['very_low'])
-rule4 = ctrl.Rule(vehicle_load['very_high'], v_safe['low'])
+rule2 = ctrl.Rule(visibility['mid'], v_safe['mid'])
+rule3 = ctrl.Rule(traffic['high'], v_safe['low'])
+rule4 = ctrl.Rule(traffic['mid'], v_safe['mid'])
+rule5 = ctrl.Rule(vehicle_load['very_high'], v_safe['low'])
 
-# REGUŁY OGRANICZAJĄCE
-rule5 = ctrl.Rule(traffic['high'] & road['urban'], v_safe['very_low'])
-rule6 = ctrl.Rule(traffic['high'] & vehicle_load['high'], v_safe['low'])
-rule7 = ctrl.Rule(visibility['mid'] & traffic['high'], v_safe['low'])
-rule8 = ctrl.Rule(road['urban'] & vehicle_load['high'], v_safe['low'])
-rule9 = ctrl.Rule(traffic['mid'] & road['urban'], v_safe['low'])
 
-# REGUŁY ŚREDNIE
-rule10 = ctrl.Rule(visibility['mid'] & traffic['mid'] & road['local'], v_safe['mid'])
-rule11 = ctrl.Rule(visibility['good'] & traffic['mid'] & vehicle_load['normal'], v_safe['mid'])
-rule12 = ctrl.Rule(road['local'] & traffic['low'] & vehicle_load['high'], v_safe['mid'])
-rule13 = ctrl.Rule(visibility['mid'] & road['expressway'], v_safe['mid'])
 
-# DOBRE WARUNKI
-rule14 = ctrl.Rule(visibility['good'] & traffic['low'] & road['expressway'], v_safe['high'])
-rule15 = ctrl.Rule(visibility['good'] & traffic['low'] & road['motorway'], v_safe['high'])
-rule16 = ctrl.Rule(road['motorway'] & traffic['mid'] & visibility['good'], v_safe['mid'])
-rule17 = ctrl.Rule(visibility['good'] & traffic['low'] & vehicle_load['normal'], v_safe['high'])
+# VISIBILITY x ROAD
+rule6 = ctrl.Rule(visibility['very_low'] & road['urban'], v_safe['very_low'])
+rule7 = ctrl.Rule(visibility['very_low'] & (road['local'] | road['expressway']), v_safe['low'])
+rule8 = ctrl.Rule(visibility['very_low'] & road['expressway'], v_safe['low'])
+rule9 = ctrl.Rule(visibility['very_low'] & road['motorway'], v_safe['low'])
+rule10 = ctrl.Rule(visibility['low'] & road['motorway'], v_safe['mid'])
+rule11 = ctrl.Rule(visibility['low'] & road['urban'], v_safe['low'])
+rule12 = ctrl.Rule(visibility['low'] & road['local'], v_safe['low'])
+rule13 = ctrl.Rule((visibility['low']) & road['expressway'], v_safe['mid'])
+rule14 = ctrl.Rule((visibility['mid']) & road['expressway'], v_safe['mid'])
+rule15 = ctrl.Rule(visibility['mid'] & road['urban'], v_safe['low'])
+rule16 = ctrl.Rule(visibility['mid'] & road['local'], v_safe['mid'])
+rule17 = ctrl.Rule(visibility['mid'] & road['motorway'], v_safe['high'])
+rule18 = ctrl.Rule(visibility['good'] & road['motorway'], v_safe['very_high'])
+rule19 = ctrl.Rule(visibility['good'] & road['urban'], v_safe['low'])
+rule20 = ctrl.Rule(visibility['good'] & road['local'], v_safe['mid'])
+rule21 = ctrl.Rule(visibility['good'] & road['expressway'], v_safe['high'])
 
-# OPTIMUM
-rule18 = ctrl.Rule(visibility['good'] & traffic['low'] & road['motorway'] & vehicle_load['normal'],v_safe['very_high'])
-rule19 = ctrl.Rule(visibility['good'] & traffic['low'] & road['motorway'] & vehicle_load['high'],v_safe['high'])
+# TRAFFIC x ROAD
+rule22 = ctrl.Rule(traffic['low'] & road['urban'], v_safe['low'])
+rule23 = ctrl.Rule(traffic['low'] & road['local'], v_safe['mid'])
+rule24 = ctrl.Rule(traffic['low'] & road['expressway'], v_safe['high'])
+rule25 = ctrl.Rule(traffic['low'] & road['motorway'], v_safe['very_high'])
+rule26 = ctrl.Rule(traffic['mid'] & road['urban'], v_safe['low'])
+rule27 = ctrl.Rule(traffic['mid'] & road['local'], v_safe['low'])
+rule28 = ctrl.Rule(traffic['mid'] & road['expressway'], v_safe['mid'])
+rule29 = ctrl.Rule(traffic['mid'] & road['motorway'], v_safe['high'])
+rule30 = ctrl.Rule(traffic['high'] & road['urban'], v_safe['very_low'])
+rule31 = ctrl.Rule(traffic['high'] & road['local'], v_safe['very_low'])
+rule32 = ctrl.Rule(traffic['high'] & road['expressway'], v_safe['low'])
+rule33 = ctrl.Rule(traffic['high'] & road['motorway'], v_safe['mid'])
 
-rule20 = ctrl.Rule(traffic['low'] & visibility['good'], v_safe['mid'])
+
+# VISIBILITY x ROAD
+rule34 = ctrl.Rule(visibility['very_low'] & traffic['high'],v_safe['very_low'])
+rule35 = ctrl.Rule(visibility['low'] & traffic['high'],v_safe['low'])
+rule36 = ctrl.Rule(visibility['very_low'] & traffic['mid'],v_safe['low'])
+
+# vehicle load
+rule37 = ctrl.Rule(vehicle_load['high'] & road['urban'], v_safe['low'])
+rule38 = ctrl.Rule(vehicle_load['high'] & road['local'], v_safe['low'])
+rule39 = ctrl.Rule(vehicle_load['high'] & road['expressway'], v_safe['mid'])
+rule40 = ctrl.Rule(vehicle_load['high'] & road['motorway'], v_safe['mid'])
+
 
 system = ctrl.ControlSystem([
-    rule1, rule2, rule3, rule4, rule5,
-    rule6, rule7, rule8, rule9, rule10,
-    rule11, rule12, rule13, rule14, rule15,
-    rule16, rule17, rule18, rule19, rule20
+    rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10,
+    rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19, rule20,
+    rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29, rule30,
+    rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40
 ])
 
-def test_system(vis, traf, load, r):
+def calculate_safe_speed(vis, traf, load, road_value):
     sim = ctrl.ControlSystemSimulation(system)
 
     sim.input['visibility'] = vis
     sim.input['traffic'] = traf
     sim.input['vehicle_load'] = load
-    sim.input['road'] = r
-
+    sim.input['road'] = road_value
     sim.compute()
-    return sim.output['v_safe']
+    result = float(sim.output['v_safe'])
+    return result
 
 def debug_system(vis, traf, load, r):
     sim = ctrl.ControlSystemSimulation(system)
@@ -169,25 +194,50 @@ def debug_system(vis, traf, load, r):
 
     rules_activation = {
         "rule1": v_vis['very_low'],
-        "rule2": min(v_vis['low'], v_traf['high']),
-        "rule3": min(v_vis['low'], v_road['urban']),
-        "rule4": v_load['very_high'],
-        "rule5": min(v_traf['high'], v_road['urban']),
-        "rule6": min(v_traf['high'], v_load['high']),
-        "rule7": min(v_vis['mid'], v_traf['high']),
-        "rule8": min(v_road['urban'], v_load['high']),
-        "rule9": min(v_traf['mid'], v_road['urban']),
-        "rule10": min(v_vis['mid'], v_traf['mid'], v_road['local']),
-        "rule11": min(v_vis['good'], v_traf['mid'], v_load['normal']),
-        "rule12": min(v_road['local'], v_traf['low'], v_load['high']),
-        "rule13": min(v_vis['mid'], v_road['expressway']),
-        "rule14": min(v_vis['good'], v_traf['low'], v_road['expressway']),
-        "rule15": min(v_vis['good'], v_traf['low'], v_road['motorway']),
-        "rule16": min(v_road['motorway'], v_traf['mid'], v_vis['good']),
-        "rule17": min(v_vis['good'], v_traf['low'], v_load['normal']),
-        "rule18": min(v_vis['good'], v_traf['low'], v_road['motorway'], v_load['normal']),
-        "rule19": min(v_vis['good'], v_traf['low'], v_road['motorway'], v_load['high']),
-        "rule20": min(v_traf['low'], v_vis['good']),
+        "rule2": v_vis['mid'],
+        "rule3": v_traf['high'],
+        "rule4": v_traf['mid'],
+        "rule5": v_load['very_high'],
+
+        # --- VISIBILITY x ROAD ---
+        "rule6": min(v_vis['very_low'], v_road['urban']),
+        "rule7": min(v_vis['very_low'], v_road['local']),
+        "rule8": min(v_vis['very_low'], v_road['expressway']),
+        "rule9": min(v_vis['very_low'], v_road['motorway']),
+        "rule10": min(v_vis['low'], v_road['motorway']),
+        "rule11": min(v_vis['low'], v_road['urban']),
+        "rule12": min(v_vis['low'], v_road['local']),
+        "rule13": min(v_vis['low'], v_road['expressway']),
+        "rule14": min(v_vis['mid'], v_road['expressway']),
+        "rule15": min(v_vis['mid'], v_road['urban']),
+        "rule16": min(v_vis['mid'], v_road['local']),
+        "rule17": min(v_vis['mid'], v_road['motorway']),
+        "rule18": min(v_vis['good'], v_road['motorway']),
+        "rule19": min(v_vis['good'], v_road['urban']),
+        "rule20": min(v_vis['good'], v_road['local']),
+        "rule21": min(v_vis['good'], v_road['expressway']),
+
+        # --- TRAFFIC x ROAD ---
+        "rule22": min(v_traf['low'], v_road['urban']),
+        "rule23": min(v_traf['low'], v_road['local']),
+        "rule24": min(v_traf['low'], v_road['expressway']),
+        "rule25": min(v_traf['low'], v_road['motorway']),
+        "rule26": min(v_traf['mid'], v_road['urban']),
+        "rule27": min(v_traf['mid'], v_road['local']),
+        "rule28": min(v_traf['mid'], v_road['expressway']),
+        "rule29": min(v_traf['mid'], v_road['motorway']),
+        "rule30": min(v_traf['high'], v_road['urban']),
+        "rule31": min(v_traf['high'], v_road['local']),
+        "rule32": min(v_traf['high'], v_road['expressway']),
+        "rule33": min(v_traf['high'], v_road['motorway']),
+        "rule34": min(v_vis['very_low'], v_traf['high']),
+        "rule35": min(v_vis['low'], v_traf['high']),
+        "rule36": min(v_vis['very_low'], v_traf['mid']),
+        "rule37": min(v_load['high'], v_road['urban']),
+        "rule38": min(v_load['high'], v_road['local']),
+        "rule39": min(v_load['high'], v_road['expressway']),
+        "rule40": min(v_load['high'], v_road['motorway']),
+
     }
 
     print("\n=== AKTYWACJA REGUŁ (FIRING STRENGTH) ===")
@@ -197,8 +247,10 @@ def debug_system(vis, traf, load, r):
     plt.show()
     return sim.output['v_safe']
 
-debug = debug_system(50, 0, 0, 140)
-print(f"prędkość wyjściowa: {debug}")
-# test = test_system(30, 0, 0, 140)
+
+# MAIN CODE
+# debug = debug_system(50,0,0,0)
+# print(f"prędkość wyjściowa: {debug}")
+# test = calculate_safe_speed(30, 0, 0, 140)
 # print(test)
 
