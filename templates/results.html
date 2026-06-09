@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drive Speed Optimizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  </head>
+
+<body>
+    <div class="container">
+        <h1>Bezpieczna prędkość</h1>
+
+        <div class="speed">
+            {{ safe_speed }}
+            <span class="unit">km/h</span>
+        </div>
+
+        <div class="inputs">
+            <p><strong>Widoczność:</strong> {{ visibility }} m</p>
+            <p><strong>Natężenie ruchu:</strong> {{ traffic }} %</p>
+            <p><strong>Obciążenie pojazdu:</strong> {{ vehicle_load }} %</p>
+            <p><strong>Maks prędkość na drodze:</strong> {{ road }} km/h</p>
+        </div>
+        <a href="/" class="back-btn">Powrót</a>
+        <button onclick="toggleChart()">Pokaż / ukryj wykres</button>
+    </div>
+<div id="chartContainer" style="display: none; margin-top: 20px;">
+    <img src="data:image/png;base64,{{ chart }}" />
+</div>
+</body>
+</html>
+
+<script>
+function toggleChart() {
+    const el = document.getElementById("chartContainer");
+
+    if (el.style.display === "none") {
+        el.style.display = "block";
+    } else {
+        el.style.display = "none";
+    }
+}
+</script>

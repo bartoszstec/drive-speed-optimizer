@@ -12,10 +12,10 @@ except Exception as e:
 
 
 # próbki
-vis_samples = [0, 50, 200]
-traf_samples = [0, 50, 100]
-load_samples = [0, 100]
-road_samples = [0, 120]
+vis_samples = [0, 20, 40, 50, 100, 200, 250, 300, 400, 500]
+traf_samples = [0, 20, 40, 50, 60, 80, 100]
+load_samples = [0, 50, 70, 75, 85, 90, 100]
+road_samples = [0, 20, 40, 50, 60, 70, 90, 100, 120, 140]
 
 print("Uruchamiam testy przez pętlę for, wywołując funkcję przyjmującą 4 wartości (test_system)...")
 results = []
@@ -27,7 +27,7 @@ for vis in vis_samples:
             for rd in road_samples:
                 cnt += 1
                 try:
-                    v = fuzzy.calculate_safe_speed(vis, traf, load, rd)
+                    v = fuzzy.calculate_safe_speed(vis, traf, load, rd, only_value=True)
                     v_safe = float(v)
                 except Exception as e:
                     # Jeśli symulacja nie zwróci wartości (np. brak aktywacji), zapisujemy NaN

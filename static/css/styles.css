@@ -1,0 +1,234 @@
+/* Import futurystycznej czcionki */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+    --bg-color: #0a0f1d;
+    --panel-bg: rgba(16, 24, 48, 0.75);
+    --neon-cyan: #00f3ff;
+    --neon-magenta: #ff0055;
+    --text-color: #c4d1ec;
+    --border-glow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(at 50% 0%, rgba(0, 243, 255, 0.15) 0px, transparent 50%),
+        linear-gradient(rgba(18, 24, 41, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 24, 41, 0.4) 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Kontener główny aplikacji (HUD Panel) */
+.container {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: var(--border-glow), inset 0 0 20px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dekoracyjny element narożny Sci-Fi */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 3px solid var(--neon-cyan);
+    border-left: 3px solid var(--neon-cyan);
+}
+
+h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+}
+
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.4rem; color: var(--neon-cyan); }
+
+p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #8fa0c4;
+}
+
+/* Formularz */
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(7, 11, 22, 0.8);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+/* Przyciski */
+button, .back-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    border-radius: 6px;
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.1);
+    margin-top: 25px;
+}
+
+button:hover, .back-btn:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+/* Widok rezultatów (Szybkościomierz) */
+.speed {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin: 30px 0;
+    text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px rgba(255, 0, 85, 0.3);
+    animation: pulse 2s infinite alternate;
+}
+
+.speed .unit {
+    font-size: 1.5rem;
+    color: var(--neon-magenta);
+    display: block;
+    margin-top: -10px;
+    letter-spacing: 2px;
+}
+
+/* Panel wprowadzonych danych w wynikach */
+.inputs {
+    background: rgba(7, 11, 22, 0.6);
+    border-left: 3px solid var(--neon-cyan);
+    padding: 15px 20px;
+    margin: 25px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.inputs p {
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.inputs p strong {
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+/* Animacja pulsu dla wyniku prędkości */
+@keyframes pulse {
+    from { text-shadow: 0 0 20px var(--neon-magenta), 0 0 30px rgba(255, 0, 85, 0.2); }
+    to { text-shadow: 0 0 25px var(--neon-magenta), 0 0 50px rgba(255, 0, 85, 0.5); }
+}
+
+#chartContainer {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    /* sci-fi spójność z panelem */
+    background: rgba(7, 11, 22, 0.6);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-left: 3px solid var(--neon-magenta);
+    border-radius: 10px;
+
+    padding: 20px;
+    box-shadow: var(--border-glow);
+}
+
+/* obraz wykresu */
+#chartContainer img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+
+    /* wycentrowanie i “HUD look” */
+    margin: 0 auto;
+
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+}
+
+/* opcjonalny nagłówek wykresu */
+#chartContainer::before {
+    content: "FUZZY OUTPUT: V_SAFE";
+    display: block;
+    text-align: center;
+
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+}
